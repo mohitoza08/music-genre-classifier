@@ -5,30 +5,43 @@ CSV_PATH = 'features.csv'
 
 try:
     features_df = pd.read_csv(CSV_PATH)
-    print("DataFrame info")
-    print(features_df.info())
-    print('\nStatistical Summary')
-    print(features_df.describe())
-    print(features_df.isnull().sum())
+    # print("DataFrame info")
+    # print(features_df.info())
+    # print('\nStatistical Summary')
+    # print(features_df.describe())
+    # print(features_df.isnull().sum())
     genre_names = [
         'blues', 'classical', 'country', 'disco', 'hiphop', 
         'jazz', 'metal', 'pop', 'reggae', 'rock'
     ]
-    sns.set_style("whitegrid")
-    plt.figure(figsize=(12,6))
+    # sns.set_style("whitegrid")
+    # plt.figure(figsize=(12,6))
 
-    ax = sns.countplot(x='genre_label',data=features_df,palette='viridis')
-    ax.set_title("Distribution of music genres in dataset")
-    ax.set_xlabel('Genre', fontsize=12)
-    ax.set_ylabel('Number of Segments', fontsize=12)
-
-    
-    ax.set_xticklabels(genre_names, rotation=30)
+    # ax = sns.countplot(x='genre_label',data=features_df,palette='viridis')
+    # ax.set_title("Distribution of music genres in dataset")
+    # ax.set_xlabel('Genre', fontsize=12)
+    # ax.set_ylabel('Number of Segments', fontsize=12)
 
     
+    # ax.set_xticklabels(genre_names, rotation=30)
+
+    
+    # plt.tight_layout()
+    # plt.show()
+     
+    print("genrating box plot for spectral centorid")
+    plt.figure(figsize=(14,7))
+
+    box_ax = sns.boxplot(x="genre_label",y="25",data=features_df,palette='cubehelix')
+    box_ax.set_title("Spectral centroid for distribution accros genres")
+    box_ax.set_xlabel("genres",fontsize=14)
+    box_ax.set_ylabel("spectral centroid",fontsize=14)
+    box_ax.set_xticklabels(genre_names,rotation=30,ha='right')
+
     plt.tight_layout()
     plt.show()
 
+    
 except FileNotFoundError:
     print(f"Error: The file '{CSV_PATH}' was not found.")
 except Exception as e:
