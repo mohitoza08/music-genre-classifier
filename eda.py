@@ -1,6 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 CSV_PATH = 'features.csv'
 
 try:
@@ -53,18 +56,44 @@ try:
     # plt.tight_layout()
     # plt.show()
     
-    print("Cpmputing the correlation matrix")
-    corr_mat = features_df.corr()
-    print("Correlation matrix computed successfully")
-    print("Top 5 rows of the correlation matrix")
-    print(corr_mat.head())
+    # print("Cpmputing the correlation matrix")
+    # corr_mat = features_df.corr()
+    # print("Correlation matrix computed successfully")
+    # print("Top 5 rows of the correlation matrix")
+    # print(corr_mat.head())
 
-    print("Heatmap of correaltion matix")
-    plt.figure(figsize=(18,15))
-    sns.heatmap(corr_mat,cmap='coolwarm',annot=False)
-    plt.title("heatmap of correaltion matrix",fontsize=20)
-    plt.tight_layout()
-    plt.show()
+    # print("Heatmap of correaltion matix")
+    # plt.figure(figsize=(18,15))
+    # sns.heatmap(corr_mat,cmap='coolwarm',annot=False)
+    # plt.title("heatmap of correaltion matrix",fontsize=20)
+    # plt.tight_layout()
+    # plt.show()/
+
+    X = features_df.drop('genre_label',axis=1)
+    y= features_df['genre_label']
+
+    # print(f"Shape of X is {X.shape}")
+    # print(f"Shape of y is {y.shape}")
+
+    # print(X.head())
+    # print("-----Y------")
+    # print(y.head())/
+     
+    # print("Label encoding step")
+    # if np.issubdtype(y.dtype,np.integer):
+    #     print("Already all are neumerical")
+    # else:
+    #     print("Labels are not neumerically encoded")        
+    
+    print("Splitting Dataset into Training and Testing Data")
+
+    X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,stratify=y)
+
+    print("Verification through shapes")
+    print(f"Shape of X_train: {X_train.shape}")
+    print(f"Shape of X_test: {X_test.shape}")   
+    print(f"Shape of y_train: {y_train.shape}") 
+    print(f"Shape of y_test: {y_test.shape}")   
     
 except FileNotFoundError:
     print(f"Error: The file '{CSV_PATH}' was not found.")
