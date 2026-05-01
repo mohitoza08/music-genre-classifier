@@ -1,9 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
 CSV_PATH = 'features.csv'
 
 try:
@@ -70,7 +72,10 @@ try:
     # plt.show()/
 
     X = features_df.drop('genre_label',axis=1)
-    y= features_df['genre_label']
+    y = features_df['genre_label']
+
+    
+
 
     # print(f"Shape of X is {X.shape}")
     # print(f"Shape of y is {y.shape}")
@@ -85,16 +90,39 @@ try:
     # else:
     #     print("Labels are not neumerically encoded")        
     
-    print("Splitting Dataset into Training and Testing Data")
+    # print("Splitting Dataset into Training and Testing Data")
 
     X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,stratify=y)
 
-    print("Verification through shapes")
-    print(f"Shape of X_train: {X_train.shape}")
-    print(f"Shape of X_test: {X_test.shape}")   
-    print(f"Shape of y_train: {y_train.shape}") 
-    print(f"Shape of y_test: {y_test.shape}")   
+    # print("Verification through shapes")
+    # print(f"Shape of X_train: {X_train.shape}")
+    # print(f"Shape of X_test: {X_test.shape}")   
+    # print(f"Shape of y_train: {y_train.shape}") 
+    # print(f"Shape of y_test: {y_test.shape}")   
+
+    print("scaling features")
+    scaler = StandardScaler()
+   
+
+    # print("Verification of scaler")
+    # print(scaler.mean_[:5])
+    # print(scaler.scale_[:5])
     
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    # print("verification of scaled data")
+
+    # print(f"mean of first 5 xtrain scaled data {X_train_scaled[:,:5].mean(axis=0)}")
+    # print(f"std of first 5 xtrain scaled data {X_train_scaled[:,:5].std(axis=0)}")
+    
+    # print(f"Mean of first 5 scaled test data {X_test_scaled[:,:5].mean(axis=0)}")
+
+    print("Training the logistic regression model")
+    log_reg = LogisticRegression(max_iter=1000)
+    log_reg.fit(X_train_scaled,y_train)
+    print("Logistic regression model trained Successfully")
+    print(f"Model learned the following classes {log_reg.classes_}")
 except FileNotFoundError:
     print(f"Error: The file '{CSV_PATH}' was not found.")
 except Exception as e:
