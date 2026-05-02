@@ -6,6 +6,10 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+import joblib
+from sklearn.metrics import accuracy_score
 CSV_PATH = 'features.csv'
 
 try:
@@ -118,11 +122,50 @@ try:
     
     # print(f"Mean of first 5 scaled test data {X_test_scaled[:,:5].mean(axis=0)}")
 
-    print("Training the logistic regression model")
+    # print("Training the logistic regression model")
     log_reg = LogisticRegression(max_iter=1000)
     log_reg.fit(X_train_scaled,y_train)
-    print("Logistic regression model trained Successfully")
-    print(f"Model learned the following classes {log_reg.classes_}")
+    # print("Logistic regression model trained Successfully")
+    # print(f"Model learned the following classes {log_reg.classes_}")
+
+    # print("Training Support vector classifier")
+    svm_model = SVC(kernel='rbf',C=1.0,random_state=42,probability=True)
+    svm_model.fit(X_train_scaled,y_train)
+    # print("Svm model trained succesfully")
+    # print(f"Classes are {svm_model.classes_}") 
+
+    # print("training Random forest classifier")
+    rf_model = RandomForestClassifier(n_estimators=100,random_state=42,n_jobs=-1)
+    rf_model.fit(X_train_scaled,y_train)
+    # print("Random Forest Model Trained Succesfully")
+    # print(f"Learned Classes are {rf_model.classes_}")
+
+    # print("Evaluation models on Test set")
+    # y_pred_log_reg = log_reg.predict(X_test_scaled)
+    # acc_log_reg = accuracy_score(y_test,y_pred_log_reg)
+    # print(f"Logistic Regression accuracy {acc_log_reg*100:.2f}%")
+
+   
+
+    # print()
+
+    # y_pred_svm = svm_model.predict(X_test_scaled)
+    # acc_svm = accuracy_score(y_test,y_pred_svm)
+    # print(f"accuracy scoer of svm is {acc_svm*100:.2f}")
+    
+    # print()
+
+    # y_pred_rf = rf_model.predict(X_test_scaled)
+    # acc_rf = accuracy_score(y_test,y_pred_rf)
+    # print(f"accuracy score of rf model is {acc_rf*100:.2f}")
+
+    print("saving models to base")
+    joblib.dump(scaler,'scaler.joblib')
+    joblib.dump(log_reg,'logistic_regression_model.joblib')
+    joblib.dump(svm_model,'Svm_model.joblib')
+    joblib.dump(rf_model,'random_forest_model.joblib')
+
+    print("all models saved successfully")
 except FileNotFoundError:
     print(f"Error: The file '{CSV_PATH}' was not found.")
 except Exception as e:
