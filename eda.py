@@ -159,11 +159,11 @@ try:
     # acc_rf = accuracy_score(y_test,y_pred_rf)
     # print(f"accuracy score of rf model is {acc_rf*100:.2f}")
 
-    print("saving models to base")
-    joblib.dump(scaler,'scaler.joblib')
-    joblib.dump(log_reg,'logistic_regression_model.joblib')
-    joblib.dump(svm_model,'Svm_model.joblib')
-    joblib.dump(rf_model,'random_forest_model.joblib')
+    # print("saving models to base")
+    # joblib.dump(scaler,'scaler.joblib')
+    # joblib.dump(log_reg,'logistic_regression_model.joblib')
+    # joblib.dump(svm_model,'Svm_model.joblib')
+    # joblib.dump(rf_model,'random_forest_model.joblib')
 
     print("all models saved successfully")
 except FileNotFoundError:
