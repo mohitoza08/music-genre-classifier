@@ -3,6 +3,18 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+import tensorflow as tf
+
+from tensorflow.keras.models import sequntial
+
+from tensorflow.keras.layers(
+    Conv1D,
+    MaxPooling1D,
+    BatchNormalization,
+    Dropout,
+    Flatten,
+    Dense
+)
 
 CSV_PATH = "features.csv"
 
