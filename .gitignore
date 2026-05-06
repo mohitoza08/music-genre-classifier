@@ -1,7 +1,9 @@
 venv/
+venv_new/
 __pycache__/
 *.pyc
 .DS_Store
 *.md
 images_original/
 genres_original/
+open.txt

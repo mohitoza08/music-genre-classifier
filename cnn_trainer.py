@@ -5,9 +5,9 @@ from sklearn.preprocessing import StandardScaler
 
 import tensorflow as tf
 
-from tensorflow.keras.models import sequntial
+from tensorflow.keras.models import Sequential
 
-from tensorflow.keras.layers(
+from tensorflow.keras.layers import (
     Conv1D,
     MaxPooling1D,
     BatchNormalization,
@@ -44,14 +44,26 @@ X_test_scaled = scaler.transform(X_test)
 # print(f"the shape of X_test_scaled is {X_test_scaled.shape}")
 
 
-print("Reshaping data for cnn model")
+# print("Reshaping data for cnn model")
 
 X_train_cnn = np.expand_dims(X_train_scaled,axis=-1)
 X_test_cnn = np.expand_dims(X_test_scaled,axis=-1)
 
-print("\nShapes after reshaping for CNN:")
-print(f"X_train_cnn shape: {X_train_cnn.shape}") 
-print(f"X_test_cnn shape: {X_test_cnn.shape}")   
+# print("\nShapes after reshaping for CNN:")
+# print(f"X_train_cnn shape: {X_train_cnn.shape}") 
+# print(f"X_test_cnn shape: {X_test_cnn.shape}")   
 
-print(f"\ny_train shape: {y_train.shape}")
-print(f"y_test shape: {y_test.shape}")
+# print(f"\ny_train shape: {y_train.shape}")
+# print(f"y_test shape: {y_test.shape}")
+
+
+
+model = Sequential()
+model.add(Conv1D(
+      filters=32,
+      kernel_size=3,
+      activation='relu',
+      input_shape=(X_train_cnn.shape[1],1)
+))
+
+model.summary()
