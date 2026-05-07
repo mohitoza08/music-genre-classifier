@@ -65,5 +65,18 @@ model.add(Conv1D(
       activation='relu',
       input_shape=(X_train_cnn.shape[1],1)
 ))
+model.add(MaxPooling1D(pool_size=2))
+model.add(BatchNormalization())
+
+
+model.add(Conv1D(filters=64, kernel_size=3, activation='relu'))
+model.add(MaxPooling1D(pool_size=2))
+model.add(BatchNormalization())
+
+model.add(Conv1D(filters=128, kernel_size=3, activation='relu'))
+model.add(MaxPooling1D(pool_size=2))
+model.add(BatchNormalization())
+
+model.add(Flatten())
 
 model.summary()
