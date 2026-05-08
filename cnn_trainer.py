@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
+from tensorflow.keras.callbacks import EarlyStopping
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
@@ -78,5 +78,61 @@ model.add(MaxPooling1D(pool_size=2))
 model.add(BatchNormalization())
 
 model.add(Flatten())
+model.add(Dense(units=64,activation="relu"))
+model.add(Dropout(0.5))
+
+model.add(Dense(units=10,activation='softmax'))
+
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+print("Model compiled Successfully, Now ready to be trained....")
+
+early_stop = EarlyStopping(
+    monitor='val_loss',
+    patience=5,
+    restore_best_weights=True
+)
+
+print("Traing the CNN model")
+history = model.fit(
+    X_train_cnn,
+    y_train,
+    epochs=25,
+    batch_size=32,
+    validation_split=0.2,
+    callbacks=[early_stop]
+)
+print("Model Training Completed")
 
 model.summary()
+
+
+import matplotlib.pyplot as plt
+
+def plot_history(history):
+    fig,axs = plt.subplots(2,1,figsize=(10,10))
+    axs[0].plot(history.history['accuracy'],label="Training Accuracy")
+    axs[0].plot(history.history['val_accuracy'],label="Validation Acuracy")
+    axs[0].set_ylabel("Accuracy")
+    axs[0].set_title("Training vs Validattion Accuracy")
+    axs[0].legend(loc='lower right')
+
+
+    axs[1].plot(history.history['loss'],label="Training loss")
+    axs[1].plot(history.history['val_loss'],label="Validation loss")
+    axs[1].set_ylabel('Loss')
+    axs[1].set_xlabel('Epochs')
+    axs[1].legend(loc='upper right')
+
+    plt.tight_layout()
+
+    plt.show()
+
+plot_history(history)    
+
+model.save("music_genre_cnn.h5")
+print("Model successfully saved")
