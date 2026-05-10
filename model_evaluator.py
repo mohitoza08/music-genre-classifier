@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 import joblib
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import classification_report,confusion_matrix
 
 print("Now Model evalutaion")
 
@@ -52,6 +52,60 @@ try:
 
 
     print("All models and data loaded Successfully")
+
+    print("Genrating Predictions")
+    y_pred_log_reg = log_reg_model.predict(X_test_scaled)
+    y_pred_svm = svm_model.predict(X_test_scaled)
+    y_pred_rf = rf_model.predict(X_test_scaled)
+
+    y_pred_cnn_probs = cnn_model.predict(X_test_cnn)
+    y_pred_cnn = np.argmax(y_pred_cnn_probs,axis=1)
+
+    print("Predictions Genarated")
+
+    print("Verifying Shapes")
+    print(f"Logistic Regression Predictions Shape: {y_pred_log_reg.shape}")
+    print(f"SVM Predictions Shape: {y_pred_svm.shape}")
+    print(f"Random Forest Predictions Shape: {y_pred_rf.shape}")
+    print(f"CNN Predictions Shape: {y_pred_cnn.shape}")
+
+
+    genre_names = [
+        'blues', 'classical', 'country', 'disco', 'hiphop', 
+        'jazz', 'metal', 'pop', 'reggae', 'rock'
+    ]
+
+    # print("Classification Reports")
+
+    # print("Classification Report of Logistic Regression")
+    # print(classification_report(y_test,y_pred_log_reg,target_names=genre_names))
+    
+    # print("Classification Report of SVM")
+    # print(classification_report(y_test,y_pred_svm,target_names=genre_names))
+    
+    # print("Classification Report of RandomForest")
+    # print(classification_report(y_test,y_pred_rf,target_names=genre_names))
+    
+    # print("Classification Report of CNN Model")
+    # print(classification_report(y_test,y_pred_cnn,target_names=genre_names))
+    
+    print("Confusion Matrixs")
+    cm_log_reg = confusion_matrix(y_test, y_pred_log_reg)
+    cm_svm = confusion_matrix(y_test, y_pred_svm)
+    cm_rf = confusion_matrix(y_test, y_pred_rf)
+    cm_cnn = confusion_matrix(y_test, y_pred_cnn)
+
+    print("Confusion Matrix of Logistic Regression")
+    print(cm_log_reg)
+    
+    print("Confusion Matrix of SVM")
+    print(cm_svm)
+    
+    print("Confusion Matrix of Randomforest")
+    print(cm_rf)
+    
+    print("Confusion Matrix of Cnn")
+    print(cm_cnn)
 
 
 except FileNotFoundError as e:
