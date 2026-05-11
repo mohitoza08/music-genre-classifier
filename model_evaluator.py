@@ -4,6 +4,8 @@ import tensorflow as tf
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report,confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 print("Now Model evalutaion")
 
@@ -95,19 +97,42 @@ try:
     cm_rf = confusion_matrix(y_test, y_pred_rf)
     cm_cnn = confusion_matrix(y_test, y_pred_cnn)
 
-    print("Confusion Matrix of Logistic Regression")
-    print(cm_log_reg)
+    # print("Confusion Matrix of Logistic Regression")
+    # print(cm_log_reg)
     
-    print("Confusion Matrix of SVM")
-    print(cm_svm)
+    # print("Confusion Matrix of SVM")
+    # print(cm_svm)
     
-    print("Confusion Matrix of Randomforest")
-    print(cm_rf)
+    # print("Confusion Matrix of Randomforest")
+    # print(cm_rf)
     
-    print("Confusion Matrix of Cnn")
-    print(cm_cnn)
+    # print("Confusion Matrix of Cnn")
+    # print(cm_cnn)
+    
 
+    def plot_confusion_matrix(cm,label,title,ax):
+        sns.heatmap(    
+            cm,
+            annot=True,
+            fmt='d',
+            cmap='Blues',
+            xticklabels=label,
+            yticklabels=label,
+            ax=ax
+        )
+        ax.set_title(title,fontsize=14)
+        ax.set_xlabel('Predicted Label')
+        ax.set_ylabel('True label')
 
+    fig,axes  = plt.subplots(2,2,figsize=(15,12))
+    fig.suptitle('Confusion Matrix for all model')
+    plot_confusion_matrix(cm_log_reg, genre_names, 'Logistic Regression', axes[0, 0])
+    plot_confusion_matrix(cm_svm, genre_names, 'Support Vector Machine', axes[0, 1])
+    plot_confusion_matrix(cm_rf, genre_names, 'Random Forest', axes[1, 0])
+    plot_confusion_matrix(cm_cnn, genre_names, 'Convolutional Neural Network', axes[1, 1])
+
+    plt.tight_layout(rect=[0,0,1,0.95])
+    plt.show()
 except FileNotFoundError as e:
     print(f"Error File {e.filename} Not found")
 except Exception as e:
