@@ -1,11 +1,17 @@
 import streamlit as st
+import tensorflow as tf
+import numpy as np
+import librosa
+import joblib
 
-st.title("Music Genre Classifier")
 
-st.write("Upload the file and our model will predict its genre")
 
-uploaded_file  = st.file_uploader("Choose a file",type="wav")
+def main():
+    st.title("Music Genre Classification App")
 
-if uploaded_file is not None:
-    predicted_genre="Rock"
-    st.success(f"the predicted genre is :{predicted_genre}")
+    st.write("Welcome This Application uses Random Forest To"
+             " Predict The Genre of Music track")
+    
+
+if __name__ == '__main__':
+    main()
